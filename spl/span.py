@@ -1,6 +1,6 @@
 from dataclasses import dataclass
 
-from spl.errors import SPLInternalError
+from spl.errors import InternalError
 
 
 @dataclass(slots=True, frozen=True)
@@ -18,12 +18,10 @@ class Span:
 
     def __post_init__(self) -> None:
         if self.start < 0:
-            raise SPLInternalError(
-                f"Expected span.start >= 0, got {self.start} instead."
-            )
+            raise InternalError(f"Expected span.start >= 0, got {self.start} instead.")
 
         if self.end < self.start:
-            raise SPLInternalError(
+            raise InternalError(
                 f"Expected span.end >= span.start, got span.start={self.start} and span.end={self.end} instead."
             )
 
