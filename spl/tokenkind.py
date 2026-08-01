@@ -94,3 +94,12 @@ class TokenKind(Enum):
             str: The string representation of this token kind.
         """
         return self.value
+
+    def __repr__(self) -> str:
+        """
+        Returns the official string representation of this token kind.
+
+        Returns:
+            str: The official string representation of this token kind.
+        """
+        return f"TokenKind.{self.name}"

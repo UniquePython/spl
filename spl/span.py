@@ -26,3 +26,21 @@ class Span:
             raise SPLInternalError(
                 f"Expected span.end >= span.start, got span.start={self.start} and span.end={self.end} instead."
             )
+
+    def __str__(self) -> str:
+        """
+        Returns the string representation of this span.
+
+        Returns:
+            str: The string representation of this span.
+        """
+        return f"[{self.start}, {self.end})"
+
+    def __repr__(self) -> str:
+        """
+        Returns the official string representation of this span.
+
+        Returns:
+            str: The official string representation of this span.
+        """
+        return f"Span(start={self.start}, end={self.end})"
