@@ -1,0 +1,24 @@
+Logical (&&, ||, !): operands must be bool. Result is bool.
+
+
+Bitwise (&, |, ^, <<, >>): operands must be integer types (i8...u64). Not legal on f32/f64/bool.
+
+
+Arithmetic (+, -, *, /, %, **): operands must be the same concrete numeric type --- no implicit widening. 
+i32 + i64 is a compile-time type error; requires an explicit cast (cast syntax not yet designed).
+Context-inferred literals resolve to whatever type they're paired against, so x + 5 where x: i64 is fine
+--- 5 infers as i64, no mixing occurs.
+
+
+Comparison (==, !=, <, >, <=, >=, and the !</!>/!<=/!>= synonyms): both operands must be the same concrete type.
+Cross-type comparisons are a compile-time error under the same strict rule.
+
+
+Shift amount (<<, >>): follows the same "no mixing" rule as arithmetic --- both sides must resolve to the same
+integer type (typically satisfied automatically when the shift amount is a literal, since it infers from context).
+
+
+Numeric-to-numeric casts (to) always legal.
+
+
+bool <-> numeric casting: disallowed, compile-time type error.

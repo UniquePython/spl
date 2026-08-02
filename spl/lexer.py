@@ -7,9 +7,62 @@ from spl.token import Token
 from spl.tokenkind import TokenKind
 
 KEYWORDS = {
-    "mut": TokenKind.MUT,
+    # Mutability
     "const": TokenKind.CONST,
+    "mut": TokenKind.MUT,
+    # Primitive types
+    "i8": TokenKind.I8,
+    "i16": TokenKind.I16,
+    "i32": TokenKind.I32,
+    "i64": TokenKind.I64,
+    "u8": TokenKind.U8,
+    "u16": TokenKind.U16,
+    "u32": TokenKind.U32,
+    "u64": TokenKind.U64,
+    "f32": TokenKind.F32,
+    "f64": TokenKind.F64,
+    "bool": TokenKind.BOOL,
+    # Boolean literals
+    "true": TokenKind.TRUE,
+    "false": TokenKind.FALSE,
+    # Casting
+    "to": TokenKind.TO,
 }
+
+OPERATORS = {
+    "=": TokenKind.EQ,
+    "+": TokenKind.PLUS,
+    "-": TokenKind.MINUS,
+    "*": TokenKind.MUL,
+    "/": TokenKind.DIV,
+    "%": TokenKind.MOD,
+    "**": TokenKind.POWER,
+    "!": TokenKind.NOT,
+    "==": TokenKind.EQEQ,
+    "!=": TokenKind.NEQ,
+    "<": TokenKind.LT,
+    ">": TokenKind.GT,
+    "<=": TokenKind.LE,
+    ">=": TokenKind.GE,
+    "!<": TokenKind.NLT,
+    "!>": TokenKind.NGT,
+    "!<=": TokenKind.NLE,
+    "!>=": TokenKind.NGE,
+    "<<": TokenKind.LSHIFT,
+    ">>": TokenKind.RSHIFT,
+    "&": TokenKind.AND,
+    "^": TokenKind.XOR,
+    "|": TokenKind.OR,
+    "&&": TokenKind.LAND,
+    "||": TokenKind.LOR,
+    "(": TokenKind.LPAREN,
+    ")": TokenKind.RPAREN,
+    ";": TokenKind.SEMICOLON,
+}
+
+LONGEST_FIRST_OPERATORS = tuple(
+    sorted(OPERATORS.items(), key=lambda item: len(item[0]), reverse=True)
+)
 
 IDENT_START = frozenset(string.ascii_letters)
 IDENT_REMAINING = frozenset(string.ascii_letters + string.digits + "_")
@@ -26,7 +79,7 @@ class Lexer:
         """
         self.source = source
         self.code = self.source.code
-        self.length = self.length
+        self.length = len(self.code)
 
         self.pos = 0
 
@@ -92,7 +145,7 @@ class Lexer:
         Returns:
             Token: The newly created token.
         """
-        return Token(kind, Span(start, self.pos))
+        return Token(kind, self.code[start : self.pos], Span(start, self.pos))
 
     def skipWhitespace(self) -> None:
         """Advances the lexer past all consecutive whitespace characters."""
@@ -120,18 +173,48 @@ class Lexer:
 
         return self.newToken(kind, start)
 
-    def lexInteger(self) -> Token:
-        """Lexes an integer literal from the source code.
+    def lexNumber(self) -> Token:
+        """Lexes an integer or floating-point literal from the source code.
 
         Returns:
-            Token: The token representing the integer literal.
+            Token: The token representing the numeric literal.
         """
         start = self.pos
 
         while (ch := self.peek()) is not None and ch in DIGITS:
             self.advance()
 
-        return self.newToken(TokenKind.INTEGER, start)
+        if self.peek() == "." and self.peek(1) in DIGITS:
+            self.advance()
+
+            while (ch := self.peek()) is not None and ch in DIGITS:
+                self.advance()
+
+            return self.newToken(TokenKind.FLOAT, start)
+
+        return self.newToken(TokenKind.INT, start)
+
+    def lexOperator(self) -> Token:
+        """Lexes an operator or delimiter from the source code.
+
+        Raises:
+            LexerError: If an unexpected character is encountered.
+
+        Returns:
+            Token: The token representing the operator or delimiter.
+        """
+        start = self.pos
+
+        for operator, kind in LONGEST_FIRST_OPERATORS:
+            if self.code.startswith(operator, self.pos):
+                self.pos += len(operator)
+                return self.newToken(kind, start)
+
+        raise LexerError(
+            self.source,
+            Span(self.pos, self.pos + 1),
+            f"unexpected character {self.peek()!r}",
+        )
 
     def lex(self) -> list[Token]:
         """Lexes the entire source code into a list of tokens.
@@ -156,25 +239,11 @@ class Lexer:
                 tokens.append(self.lexIdentifier())
 
             elif ch in DIGITS:
-                tokens.append(self.lexInteger())
-
-            elif ch == "=":
-                start = self.pos
-                self.advance()
-                tokens.append(self.newToken(TokenKind.EQUAL, start))
-
-            elif ch == ";":
-                start = self.pos
-                self.advance()
-                tokens.append(self.newToken(TokenKind.SEMICOLON, start))
+                tokens.append(self.lexNumber())
 
             else:
-                raise LexerError(
-                    self.source,
-                    Span(self.pos, self.pos + 1),
-                    f"unexpected character {ch!r}",
-                )
+                tokens.append(self.lexOperator())
 
-        tokens.append(Token(TokenKind.EOF, Span(self.pos, self.pos)))
+        tokens.append(Token(TokenKind.EOF, "", Span(self.pos, self.pos)))
 
         return tokens

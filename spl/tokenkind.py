@@ -26,6 +26,8 @@ class TokenKind(Enum):
     TRUE = "true"
     FALSE = "false"
 
+    TO = "to"
+
     # IDENTIFIERS
     IDENT = "identifier"
 
@@ -34,10 +36,45 @@ class TokenKind(Enum):
     FLOAT = "float"
 
     # OPERATORS
-    EQUAL = "="
+    EQ = "="
+
+    PLUS = "+"
     MINUS = "-"
+    MUL = "*"
+    DIV = "/"
+    MOD = "%"
+
+    POWER = "**"
+
+    NOT = "!"
+
+    EQEQ = "=="
+    NEQ = "!="
+
+    LT = "<"
+    GT = ">"
+    LE = "<="
+    GE = ">="
+
+    NLT = "!<"
+    NGT = "!>"
+
+    NLE = "!<="
+    NGE = "!>="
+
+    LSHIFT = "<<"
+    RSHIFT = ">>"
+
+    AND = "&"
+    XOR = "^"
+    OR = "|"
+
+    LAND = "&&"
+    LOR = "||"
 
     # DELIMITERS
+    LPAREN = "("
+    RPAREN = ")"
     SEMICOLON = ";"
 
     # SPECIAL
@@ -67,6 +104,7 @@ class TokenKind(Enum):
             TokenKind.BOOL,
             TokenKind.TRUE,
             TokenKind.FALSE,
+            TokenKind.TO,
         }
 
     @property
@@ -118,6 +156,20 @@ class TokenKind(Enum):
         }
 
     @property
+    def isBooleanLiteral(self) -> bool:
+        """
+        Returns whether this token kind represents a boolean literal.
+
+        Returns:
+            bool: True if this token kind represents a boolean literal,
+            otherwise False.
+        """
+        return self in {
+            TokenKind.TRUE,
+            TokenKind.FALSE,
+        }
+
+    @property
     def isOperator(self) -> bool:
         """
         Returns whether this token kind represents an operator.
@@ -126,8 +178,31 @@ class TokenKind(Enum):
             bool: True if this token kind represents an operator, otherwise False.
         """
         return self in {
-            TokenKind.EQUAL,
+            TokenKind.EQ,
+            TokenKind.PLUS,
             TokenKind.MINUS,
+            TokenKind.MUL,
+            TokenKind.DIV,
+            TokenKind.MOD,
+            TokenKind.POWER,
+            TokenKind.NOT,
+            TokenKind.EQEQ,
+            TokenKind.NEQ,
+            TokenKind.LT,
+            TokenKind.GT,
+            TokenKind.LE,
+            TokenKind.GE,
+            TokenKind.NLT,
+            TokenKind.NGT,
+            TokenKind.NLE,
+            TokenKind.NGE,
+            TokenKind.LSHIFT,
+            TokenKind.RSHIFT,
+            TokenKind.AND,
+            TokenKind.XOR,
+            TokenKind.OR,
+            TokenKind.LAND,
+            TokenKind.LOR,
         }
 
     @property
@@ -139,6 +214,8 @@ class TokenKind(Enum):
             bool: True if this token kind represents a delimiter, otherwise False.
         """
         return self in {
+            TokenKind.LPAREN,
+            TokenKind.RPAREN,
             TokenKind.SEMICOLON,
         }
 

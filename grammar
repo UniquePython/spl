@@ -1,0 +1,37 @@
+statement      ::= declaration | assignment
+
+declaration    ::= mutability identifier type "=" expression ";"
+assignment     ::= identifier "=" expression ";"
+
+mutability     ::= "const" | "mut"
+identifier     ::= letter , { letter | digit | "_" }
+
+type           ::= "i8" | "i16" | "i32" | "i64"
+                   | "u8" | "u16" | "u32" | "u64"
+                   | "f32" | "f64"
+                   | "bool"
+
+expression     ::= logical_or
+
+logical_or     ::= logical_and , { "||" , logical_and }
+logical_and    ::= bit_or , { "&&" , bit_or }
+bit_or         ::= bit_xor , { "|" , bit_xor }
+bit_xor        ::= bit_and , { "^" , bit_and }
+bit_and        ::= equality , { "&" , equality }
+equality       ::= relational , { ( "==" | "!=" ) , relational }
+relational     ::= cast , { ( "<" | ">" | "<=" | ">=" | "!<" | "!>" | "!<=" | "!>=" ) , cast }
+shift          ::= additive , { ( "<<" | ">>" ) , additive }
+cast           ::= shift , { "to" , type }
+additive       ::= multiplicative , { ( "+" | "-" ) , multiplicative }
+multiplicative ::= power , { ( "*" | "/" | "%" ) , power }
+power          ::= unary , { "**" , unary }
+unary          ::= ( "-" | "!" ) , unary | primary
+primary        ::= literal | identifier | "(" expression ")"
+
+literal        ::= int_literal | float_literal | bool_literal
+
+int_literal    ::= digit , { digit }
+float_literal  ::= digit , { digit } , "." , digit , { digit }
+bool_literal   ::= "true" | "false"
+
+digit          ::= "0" | "1" | "2" | "3" | "4" | "5" | "6" | "7" | "8" | "9"
