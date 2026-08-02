@@ -243,6 +243,175 @@ class TokenKind(Enum):
         }
 
     @property
+    def isUnaryOp(self) -> bool:
+        """
+        Returns whether this token kind may begin a unary expression, per
+        `unary ::= ( "-" | "!" ) , unary | primary`.
+
+        Returns:
+            bool: True if this token kind is a unary prefix operator, otherwise False.
+        """
+        return self in {
+            TokenKind.MINUS,
+            TokenKind.NOT,
+        }
+
+    @property
+    def isLogicalOrOp(self) -> bool:
+        """
+        Returns whether this token kind is a logical-or level operator, per
+        `logical_or ::= logical_and , { "||" , logical_and }`.
+
+        Returns:
+            bool: True if this token kind is a logical-or operator, otherwise False.
+        """
+        return self in {
+            TokenKind.LOR,
+        }
+
+    @property
+    def isLogicalAndOp(self) -> bool:
+        """
+        Returns whether this token kind is a logical-and level operator, per
+        `logical_and ::= bit_or , { "&&" , bit_or }`.
+
+        Returns:
+            bool: True if this token kind is a logical-and operator, otherwise False.
+        """
+        return self in {
+            TokenKind.LAND,
+        }
+
+    @property
+    def isBitOrOp(self) -> bool:
+        """
+        Returns whether this token kind is a bitwise-or level operator, per
+        `bit_or ::= bit_xor , { "|" , bit_xor }`.
+
+        Returns:
+            bool: True if this token kind is a bitwise-or operator, otherwise False.
+        """
+        return self in {
+            TokenKind.OR,
+        }
+
+    @property
+    def isBitXorOp(self) -> bool:
+        """
+        Returns whether this token kind is a bitwise-xor level operator, per
+        `bit_xor ::= bit_and , { "^" , bit_and }`.
+
+        Returns:
+            bool: True if this token kind is a bitwise-xor operator, otherwise False.
+        """
+        return self in {
+            TokenKind.XOR,
+        }
+
+    @property
+    def isBitAndOp(self) -> bool:
+        """
+        Returns whether this token kind is a bitwise-and level operator, per
+        `bit_and ::= equality , { "&" , equality }`.
+
+        Returns:
+            bool: True if this token kind is a bitwise-and operator, otherwise False.
+        """
+        return self in {
+            TokenKind.AND,
+        }
+
+    @property
+    def isEqualityOp(self) -> bool:
+        """
+        Returns whether this token kind is an equality level operator, per
+        `equality ::= relational , { ( "==" | "!=" ) , relational }`.
+
+        Returns:
+            bool: True if this token kind is an equality operator, otherwise False.
+        """
+        return self in {
+            TokenKind.EQEQ,
+            TokenKind.NEQ,
+        }
+
+    @property
+    def isRelationalOp(self) -> bool:
+        """
+        Returns whether this token kind is a relational level operator, per
+        `relational ::= shift , { ( "<" | ">" | "<=" | ">=" | "!<" | "!>" | "!<=" | "!>=" ) , shift }`.
+
+        Returns:
+            bool: True if this token kind is a relational operator, otherwise False.
+        """
+        return self in {
+            TokenKind.LT,
+            TokenKind.GT,
+            TokenKind.LE,
+            TokenKind.GE,
+            TokenKind.NLT,
+            TokenKind.NGT,
+            TokenKind.NLE,
+            TokenKind.NGE,
+        }
+
+    @property
+    def isShiftOp(self) -> bool:
+        """
+        Returns whether this token kind is a shift level operator, per
+        `shift ::= cast , { ( "<<" | ">>" ) , cast }`.
+
+        Returns:
+            bool: True if this token kind is a shift operator, otherwise False.
+        """
+        return self in {
+            TokenKind.LSHIFT,
+            TokenKind.RSHIFT,
+        }
+
+    @property
+    def isAdditiveOp(self) -> bool:
+        """
+        Returns whether this token kind is an additive level operator, per
+        `additive ::= multiplicative , { ( "+" | "-" ) , multiplicative }`.
+
+        Returns:
+            bool: True if this token kind is an additive operator, otherwise False.
+        """
+        return self in {
+            TokenKind.PLUS,
+            TokenKind.MINUS,
+        }
+
+    @property
+    def isMultiplicativeOp(self) -> bool:
+        """
+        Returns whether this token kind is a multiplicative level operator, per
+        `multiplicative ::= power , { ( "*" | "/" | "%" ) , power }`.
+
+        Returns:
+            bool: True if this token kind is a multiplicative operator, otherwise False.
+        """
+        return self in {
+            TokenKind.MUL,
+            TokenKind.DIV,
+            TokenKind.MOD,
+        }
+
+    @property
+    def isPowerOp(self) -> bool:
+        """
+        Returns whether this token kind is a power level operator, per
+        `power ::= unary , { "**" , unary }`.
+
+        Returns:
+            bool: True if this token kind is a power operator, otherwise False.
+        """
+        return self in {
+            TokenKind.POWER,
+        }
+
+    @property
     def isEOF(self) -> bool:
         """
         Returns whether this token kind represents the end-of-file marker.
