@@ -1,7 +1,7 @@
 statement      ::= declaration | assignment | if_stmt | unless_stmt | while_stmt | until_stmt
                    | forever_stmt | loop_control
 
-block          ::= "{" , statement , { statement } , "}"
+block          ::= "{" , { statement } , "}"
 
 if_stmt        ::= "if" , expression , block , [ "else" , ( if_stmt | unless_stmt | block ) ]
 unless_stmt    ::= "unless" , expression , block , [ "else" , ( if_stmt | unless_stmt | block ) ]
