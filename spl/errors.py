@@ -1,5 +1,11 @@
+from __future__ import annotations
+
+from typing import TYPE_CHECKING
+
 from spl.source import Source
-from spl.span import Span
+
+if TYPE_CHECKING:
+    from spl.span import Span
 
 
 class InternalError(Exception):
