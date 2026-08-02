@@ -27,6 +27,16 @@ KEYWORDS = {
     "false": TokenKind.FALSE,
     # Casting
     "to": TokenKind.TO,
+    # Conditional statements
+    "if": TokenKind.IF,
+    "else": TokenKind.ELSE,
+    "unless": TokenKind.UNLESS,
+    # Looping
+    "while": TokenKind.WHILE,
+    "until": TokenKind.UNTIL,
+    "forever": TokenKind.FOREVER,
+    "stop": TokenKind.STOP,
+    "skip": TokenKind.SKIP,
 }
 
 OPERATORS = {
@@ -57,6 +67,8 @@ OPERATORS = {
     "||": TokenKind.LOR,
     "(": TokenKind.LPAREN,
     ")": TokenKind.RPAREN,
+    "{": TokenKind.LBRACE,
+    "}": TokenKind.RBRACE,
     ";": TokenKind.SEMICOLON,
 }
 

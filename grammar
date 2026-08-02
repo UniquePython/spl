@@ -1,4 +1,16 @@
-statement      ::= declaration | assignment
+statement      ::= declaration | assignment | if_stmt | unless_stmt | while_stmt | until_stmt
+                   | forever_stmt | loop_control
+
+block          ::= "{" , statement , { statement } , "}"
+
+if_stmt        ::= "if" , expression , block , [ "else" , ( if_stmt | unless_stmt | block ) ]
+unless_stmt    ::= "unless" , expression , block , [ "else" , ( if_stmt | unless_stmt | block ) ]
+
+while_stmt     ::= "while" , expression , block
+until_stmt     ::= "until" , expression , block
+forever_stmt   ::= "forever" , block
+
+loop_control   ::= ( "stop" | "skip" ) , ";"
 
 declaration    ::= mutability identifier type "=" expression ";"
 assignment     ::= identifier "=" expression ";"

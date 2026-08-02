@@ -28,6 +28,17 @@ class TokenKind(Enum):
 
     TO = "to"
 
+    IF = "if"
+    ELSE = "else"
+    UNLESS = "unless"
+
+    WHILE = "while"
+    UNTIL = "until"
+    FOREVER = "forever"
+
+    STOP = "stop"
+    SKIP = "skip"
+
     # IDENTIFIERS
     IDENT = "identifier"
 
@@ -75,6 +86,8 @@ class TokenKind(Enum):
     # DELIMITERS
     LPAREN = "("
     RPAREN = ")"
+    LBRACE = "{"
+    RBRACE = "}"
     SEMICOLON = ";"
 
     # SPECIAL
@@ -105,6 +118,14 @@ class TokenKind(Enum):
             TokenKind.TRUE,
             TokenKind.FALSE,
             TokenKind.TO,
+            TokenKind.IF,
+            TokenKind.ELSE,
+            TokenKind.UNLESS,
+            TokenKind.WHILE,
+            TokenKind.UNTIL,
+            TokenKind.FOREVER,
+            TokenKind.STOP,
+            TokenKind.SKIP,
         }
 
     @property
@@ -216,6 +237,8 @@ class TokenKind(Enum):
         return self in {
             TokenKind.LPAREN,
             TokenKind.RPAREN,
+            TokenKind.LBRACE,
+            TokenKind.RBRACE,
             TokenKind.SEMICOLON,
         }
 
