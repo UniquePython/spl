@@ -8,14 +8,34 @@ class TokenKind(Enum):
     CONST = "const"
     MUT = "mut"
 
+    I8 = "i8"
+    I16 = "i16"
+    I32 = "i32"
+    I64 = "i64"
+
+    U8 = "u8"
+    U16 = "u16"
+    U32 = "u32"
+    U64 = "u64"
+
+    F32 = "f32"
+    F64 = "f64"
+
+    BOOL = "bool"
+
+    TRUE = "true"
+    FALSE = "false"
+
     # IDENTIFIERS
     IDENT = "identifier"
 
     # LITERALS
     INT = "integer"
+    FLOAT = "float"
 
     # OPERATORS
     EQUAL = "="
+    MINUS = "-"
 
     # DELIMITERS
     SEMICOLON = ";"
@@ -34,6 +54,42 @@ class TokenKind(Enum):
         return self in {
             TokenKind.CONST,
             TokenKind.MUT,
+            TokenKind.I8,
+            TokenKind.I16,
+            TokenKind.I32,
+            TokenKind.I64,
+            TokenKind.U8,
+            TokenKind.U16,
+            TokenKind.U32,
+            TokenKind.U64,
+            TokenKind.F32,
+            TokenKind.F64,
+            TokenKind.BOOL,
+            TokenKind.TRUE,
+            TokenKind.FALSE,
+        }
+
+    @property
+    def isType(self) -> bool:
+        """
+        Returns whether this token kind represents a built-in type keyword.
+
+        Returns:
+            bool: True if this token kind represents a built-in type keyword,
+            otherwise False.
+        """
+        return self in {
+            TokenKind.I8,
+            TokenKind.I16,
+            TokenKind.I32,
+            TokenKind.I64,
+            TokenKind.U8,
+            TokenKind.U16,
+            TokenKind.U32,
+            TokenKind.U64,
+            TokenKind.F32,
+            TokenKind.F64,
+            TokenKind.BOOL,
         }
 
     @property
@@ -54,7 +110,12 @@ class TokenKind(Enum):
         Returns:
             bool: True if this token kind represents a literal, otherwise False.
         """
-        return self is TokenKind.INT
+        return self in {
+            TokenKind.INT,
+            TokenKind.FLOAT,
+            TokenKind.TRUE,
+            TokenKind.FALSE,
+        }
 
     @property
     def isOperator(self) -> bool:
@@ -64,7 +125,10 @@ class TokenKind(Enum):
         Returns:
             bool: True if this token kind represents an operator, otherwise False.
         """
-        return self is TokenKind.EQUAL
+        return self in {
+            TokenKind.EQUAL,
+            TokenKind.MINUS,
+        }
 
     @property
     def isDelimiter(self) -> bool:
@@ -74,7 +138,9 @@ class TokenKind(Enum):
         Returns:
             bool: True if this token kind represents a delimiter, otherwise False.
         """
-        return self is TokenKind.SEMICOLON
+        return self in {
+            TokenKind.SEMICOLON,
+        }
 
     @property
     def isEOF(self) -> bool:
@@ -82,7 +148,8 @@ class TokenKind(Enum):
         Returns whether this token kind represents the end-of-file marker.
 
         Returns:
-            bool: True if this token kind represents the end-of-file marker, otherwise False.
+            bool: True if this token kind represents the end-of-file marker,
+            otherwise False.
         """
         return self is TokenKind.EOF
 
