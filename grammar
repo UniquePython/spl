@@ -31,9 +31,9 @@ bit_or         ::= bit_xor , { "|" , bit_xor }
 bit_xor        ::= bit_and , { "^" , bit_and }
 bit_and        ::= equality , { "&" , equality }
 equality       ::= relational , { ( "==" | "!=" ) , relational }
-relational     ::= cast , { ( "<" | ">" | "<=" | ">=" | "!<" | "!>" | "!<=" | "!>=" ) , cast }
-shift          ::= additive , { ( "<<" | ">>" ) , additive }
-cast           ::= shift , { "to" , type }
+relational     ::= shift , { ( "<" | ">" | "<=" | ">=" | "!<" | "!>" | "!<=" | "!>=" ) , shift }
+shift          ::= cast , { ( "<<" | ">>" ) , cast }
+cast           ::= additive , { "to" , type }
 additive       ::= multiplicative , { ( "+" | "-" ) , multiplicative }
 multiplicative ::= power , { ( "*" | "/" | "%" ) , power }
 power          ::= unary , { "**" , unary }
